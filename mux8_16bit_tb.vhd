@@ -47,8 +47,13 @@ begin
 	sim_proc: process
 	begin
 		ln0 <= x"dead";
+		ln1 <= x"feed";
+		ln2 <= x"face";
+		ln3 <= x"d00d";
 		ln4 <= x"beef";
+		ln5 <= x"f00d";
 		ln6 <= x"cafe";
+		ln7 <= x"d0d0";
 
 		s <= "000";
 		wait for 10 ns;
