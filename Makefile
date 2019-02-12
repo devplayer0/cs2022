@@ -2,8 +2,8 @@
 
 VCD = sim.vcd
 GHDLFLAGS = --std=08
-MODULES = decoder_3to8 mux8_16bit
-BENCHES = decoder_3to8_tb mux8_16bit_tb
+MODULES = decoder_3to8 mux8_16bit mux2_16bit
+BENCHES = decoder_3to8_tb mux8_16bit_tb mux2_16bit_tb
 
 default: all
 all: $(BENCHES)
