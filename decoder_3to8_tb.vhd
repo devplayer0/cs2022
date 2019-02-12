@@ -12,7 +12,7 @@ architecture behavior of decoder_3to8_tb is
 	);
 	end component;
 
-	signal a : std_logic_vector(2 downto 0) := (others => '0');
+	signal a : std_logic_vector(2 downto 0);
 	signal q : std_logic_vector(0 to 7);
 begin
 	uut: decoder_3to8 port map (

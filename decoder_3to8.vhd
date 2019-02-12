@@ -9,17 +9,17 @@ entity decoder_3to8 is
 	);
 end decoder_3to8;
 
-architecture behavioral of decoder_3to8 is
+architecture Behavioral of decoder_3to8 is
 begin
 	q <=
-		"10000000" when a = x"0" else
-		"01000000" when a = x"1" else
-		"00100000" when a = x"2" else
-		"00010000" when a = x"3" else
-		"00001000" when a = x"4" else
-		"00000100" when a = x"5" else
-		"00000010" when a = x"6" else
-		"00000001" when a = x"7" else
+		"10000000" when a = "000" else
+		"01000000" when a = "001" else
+		"00100000" when a = "010" else
+		"00010000" when a = "011" else
+		"00001000" when a = "100" else
+		"00000100" when a = "101" else
+		"00000010" when a = "110" else
+		"00000001" when a = "111" else
 		x"00" after 5 ns;
 end Behavioral;
 
