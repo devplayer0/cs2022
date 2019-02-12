@@ -1,0 +1,5 @@
+decoder_3to8_tb
+
+*.o
+*.vcd
+work-*.cf
