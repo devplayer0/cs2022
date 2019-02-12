@@ -1,4 +1,5 @@
 decoder_3to8_tb
+mux8_16bit_tb
 
 *.o
 *.vcd
