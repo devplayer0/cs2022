@@ -9,7 +9,7 @@ entity decoder_3to8 is
 	);
 end decoder_3to8;
 
-architecture Behavioral of decoder_3to8 is
+architecture behavioral of decoder_3to8 is
 begin
 	q <=
 		"10000000" when a = "000" else
@@ -21,5 +21,4 @@ begin
 		"00000010" when a = "110" else
 		"00000001" when a = "111" else
 		x"00" after 5 ns;
-end Behavioral;
-
+end behavioral;

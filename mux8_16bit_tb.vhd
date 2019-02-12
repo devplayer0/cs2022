@@ -66,4 +66,4 @@ begin
 
 		wait;
 	end process;
-END;
+end;

@@ -29,5 +29,4 @@ begin
 		ln6 when s = "110" else
 		ln7 when s = "111" else
 		x"0000" after 5 ns;
-end Behavioral;
-
+end behavioral;
