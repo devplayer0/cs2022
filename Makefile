@@ -8,11 +8,11 @@ BENCHES = decoder_3to8_tb
 default: all
 all: $(BENCHES)
 
-$(MODULES:=.o): $(MODULES:=.vhd)
+$(MODULES:=.o): %.o: %.vhd
 	ghdl -a -o $@ $(GHDLFLAGS) $<
-$(BENCHES:=.o): $(BENCHES:=.vhd)
+$(BENCHES:=.o): %.o: %.vhd
 	ghdl -a -o $@ $(GHDLFLAGS) $<
-$(BENCHES): $(BENCHES:=.o) | $(MODULES:=.o)
+$(BENCHES): %: %.o | $(MODULES:=.o)
 	ghdl -e -o $@ $(GHDLFLAGS) $(<:.o=)
 
 run_%: %
