@@ -16,7 +16,7 @@ begin
 	process(clock) begin
 		if (rising_edge(clock)) then
 			if load = '1' then
-				q <= data after 5 ns;
+				q <= data after 1 ns;
 			end if;
 		end if;
 	end process;

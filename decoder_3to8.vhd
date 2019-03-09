@@ -20,5 +20,5 @@ begin
 		"00000100" when a = "101" else
 		"00000010" when a = "110" else
 		"00000001" when a = "111" else
-		x"00" after 5 ns;
+		x"00" after 1 ns;
 end behavioral;

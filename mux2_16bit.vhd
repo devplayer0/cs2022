@@ -16,5 +16,5 @@ begin
 	z <=
 		ln0 when s = '0' else
 		ln1 when s = '1' else
-		x"0000" after 5 ns;
+		x"0000" after 1 ns;
 end behavioral;
