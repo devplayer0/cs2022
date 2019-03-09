@@ -1,8 +1,4 @@
-decoder_3to8_tb
-mux8_16bit_tb
-mux2_16bit_tb
-reg16_tb
-register_file_tb
+*_tb
 
 *.o
 *.vcd

@@ -1,9 +1,8 @@
 .PHONY: default all clean
 
-VCD = sim.vcd
 GHDLFLAGS = --std=08
-MODULES = decoder_3to8 mux8_16bit mux2_16bit reg16 register_file
-BENCHES = decoder_3to8_tb mux8_16bit_tb mux2_16bit_tb reg16_tb register_file_tb
+MODULES = mux4 decoder_3to8 mux8_16bit mux2_16bit full_adder logic_slice reg16 register_file
+BENCHES = mux4_tb decoder_3to8_tb mux8_16bit_tb mux2_16bit_tb logic_slice_tb full_adder_tb reg16_tb register_file_tb
 
 default: all
 all: $(BENCHES)
