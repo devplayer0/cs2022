@@ -27,11 +27,11 @@ begin
 	mux: mux4 port map (
 		s => s,
 		ln0 => '0',
-		ln1 => nb,
-		ln2 => b,
+		ln1 => b,
+		ln2 => nb,
 		ln3 => '1',
 		z => y
 	);
 
-	nb <= not b after 1 ns;
+	nb <= not b;
 end behavioral;

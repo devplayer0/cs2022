@@ -33,10 +33,10 @@ begin
 		b <= '1';
 		wait for 5 ns;
 
-		s <= "01";
+		s <= "10";
 		wait for 5 ns;
 
-		s <= "10";
+		s <= "01";
 		wait for 5 ns;
 
 		s <= "11";

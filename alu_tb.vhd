@@ -35,19 +35,19 @@ begin
 		b <= x"0001";
 		c_in <= '0';
 
-		s <= "010";
+		s <= "001";
 		wait for 40 ns;
 
 		c_in <= '1';
 		wait for 40 ns;
 
 		b <= x"fffe";
-		s <= "001";
+		s <= "010";
 		wait for 40 ns;
 
 		a <= x"fffe";
 		b <= x"0001";
-		s <= "010";
+		s <= "001";
 		wait for 40 ns;
 
 		c_in <= '0';
