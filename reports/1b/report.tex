@@ -158,5 +158,46 @@ associated ripple delay). There is also a signed overflow flag, which is calcula
 the carry in and carry out of the most significant bit's ALU slice. It can be seen functioning when
 adding \mi{c}{0xffff} (-1) and \mi{c}{0x8000} (-32768), giving an erroneous result of 
 \mi{c}{0x7fff} (32767).
+
+\newpage
+\subsection{\mi{c}{shifter}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{shifter_tb}
+	\caption{\mi{c}{shifter} testbench results}
+	\label{fig:shifter}
+\end{figure}
+
+Figure~\ref{fig:shifter} shows the simulation results of a 16-bit shifter, which is formed
+using VHDL \mi{vhdl}{generate} blocks to instantiate 3-to-1 muxes which perform the shifting 
+functionality.
+\begin{itemize}
+	\item When \mi{c}{s = 00}, the output is the same as the input
+	\item With \mi{c}{s = 10}, \mi{c}{0x0fe0} becomes \mi{c}{0x1fc0} (shifted left)
+	\item \mi{c}{s = 01} gives \mi{c}{0x1fc0} (shifted right)
+\end{itemize}
+
+\newpage
+\subsection{\mi{c}{function_unit}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{function_unit_tb}
+	\caption{\mi{c}{function_unit} testbench results}
+	\label{fig:fnu}
+\end{figure}
+Figure~\ref{fig:fnu} shows the simulation results of the complete function unit, which consists of
+an ALU, a shifter and a 16-bit mux to select the output.
+
+In addition to passing through the overflow flag and carry out from the ALU, a negative flag 
+(active if the most significant bit of the output is set) and zero flag (if the output is 0).
+
+\mi{c}{fs} determines the micro op performed by the function unit on the inputs:
+\begin{itemize}
+	\item \mi{vhdl}{fs(0)} is the carry in for the ALU
+	\item \mi{vhdl}{fs(4)} determines if the operation should be arithmetic / logical or a shift
+	\item \mi{vhdl}{fs(3 downto 1)} provides \mi{c}{s} for the ALU
+	\item \mi{vhdl}{fs(3 downto 2)} provides \mi{c}{s} for the shifter
+\end{itemize}
+
 \end{document}
 # vim: nofoldenable

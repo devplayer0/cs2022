@@ -8,7 +8,7 @@ architecture behavior of shifter_tb is
 	component shifter
 		port(
 			s :			in	std_logic_vector(1 downto 0);
-			ir, il :	in std_logic;
+			ir, il :	in	std_logic;
 			b :			in	std_logic_vector(15 downto 0);
 			h :			out	std_logic_vector(15 downto 0)
 		);
