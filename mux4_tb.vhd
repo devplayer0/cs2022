@@ -45,7 +45,10 @@ begin
 		s <= "01";
 		wait for 5 ns;
 
-		s <= "10";
+		ln1 <= '1';
+		wait for 5 ns;
+
+		s <= "11";
 		wait for 5 ns;
 
 		wait;
