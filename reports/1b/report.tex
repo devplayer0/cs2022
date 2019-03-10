@@ -199,5 +199,57 @@ In addition to passing through the overflow flag and carry out from the ALU, a n
 	\item \mi{vhdl}{fs(3 downto 2)} provides \mi{c}{s} for the shifter
 \end{itemize}
 
+\newpage
+\subsection{\mi{c}{register_file}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{register_file_tb}
+	\caption{\mi{c}{register_file} testbench results}
+	\label{fig:regs}
+\end{figure}
+
+Figure~\ref{fig:regs} shows the simulation results of the updated register file.
+\begin{itemize}
+	\item Firstly, \mi{c}{0xdead} is loaded into \mi{c}{r2} by setting \mi{c}{data = 0xdead}, \mi{c}{dst_reg = 2} and \mi{c}{load = 1} - \mi{c}{a_select} is also set to 2 and the loaded result can be seen in the \mi{c}{a} output after a clock pulse
+	\item 0 is then loaded into \mi{c}{r6} and seen on the a output
+	\item Finally, \mi{c}{0xbeef} is loaded into \mi{c}{r7} and seen on the b output
+\end{itemize}
+
+\newpage
+\subsection{\mi{c}{datapath}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{datapath_tb}
+	\caption{\mi{c}{datapath} testbench results}
+	\label{fig:datapath}
+\end{figure}
+
+Figure~\ref{fig:datapath} shows the simulation results of the complete 16-bit datapath.
+It consists of the updated register file, the function unit, a mux to select the source of 
+data loaded into registers (function unit or \mi{c}{data_in}) and a mux to select the source 
+of the b input to the function unit (register file b output or constant).
+
+All control is performed by a 17-bit control word:
+\begin{itemize}
+	\item Register file \mi{vhdl}{dst_reg <= cw(16 downto 14)}
+	\item Register file \mi{vhdl}{a_select <= cw(13 downto 11)}
+	\item Register file \mi{vhdl}{b_select <= cw(10 downto 8)}
+	\item \mi{vhdl}{cw(7)} is the function unit b operand source select
+	\item Function unit control \mi{vhdl}{fs <= cw(6 downto 2)}
+	\item \mi{vhdl}{cw(1)} is the register file \mi{c}{data_in} source select
+	\item Register file \mi{vhdl}{load <= cw(0)}
+\end{itemize}
+
+The micro ops performed by the testbench are (approximately):
+\begin{itemize}
+	\item \mi{c}{r5 <- 7}
+	\item \mi{c}{r7 <- 9}
+	\item \mi{c}{data_out <- r5}
+	\item \mi{c}{add r1, r5, r7}
+	\item \mi{c}{xor r5, r0, r0}
+	\item \mi{c}{data_out <- r5}
+	\item \mi{c}{data_out <- r1}
+\end{itemize}
+
 \end{document}
 # vim: nofoldenable
