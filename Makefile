@@ -3,10 +3,10 @@
 GHDLFLAGS = --std=08
 MODULES = mux2 mux3 mux4 decoder_3to8 mux8_16bit mux2_16bit full_adder \
 		  logic_slice arith_b_fn arithmetic_slice alu_slice reg16 \
-		  shifter alu register_file
+		  shifter alu register_file function_unit
 BENCHES = mux4_tb decoder_3to8_tb mux8_16bit_tb mux2_16bit_tb full_adder_tb \
 		  logic_slice_tb arith_b_fn_tb arithmetic_slice_tb alu_slice_tb \
-		  reg16_tb shifter_tb alu_tb register_file_tb
+		  reg16_tb shifter_tb alu_tb register_file_tb function_unit_tb
 
 default: all
 all: $(BENCHES)
