@@ -29,7 +29,7 @@
 \newcommand{\NA}{---}
 
 \title{CS2022 - Project 1B}
-\date{2010-03-10}
+\date{2019-03-10}
 \author{\url{https://git.nul.ie/dev/cs2022}\\\url{https://github.com/devplayer0/cs2022}\\Jack O'Sullivan\\\href{mailto:osullj19@tcd.ie}{osullj19@tcd.ie}}
 
 \begin{document}
@@ -64,5 +64,99 @@ Figure~\ref{fig:mux4} shows the simulation results of a simple 4-to-1 mux.
 \emph{Note: testbenches for \mi{c}{mux2} and \mi{c}{mux3} were not included since they are simply 
 reduced versions of \mi{c}{mux4}.}
 
+\newpage
+\subsection{\mi{c}{full_adder}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{full_adder_tb}
+	\caption{\mi{c}{full_adder} testbench results}
+	\label{fig:fulladder}
+\end{figure}
+
+Figure~\ref{fig:fulladder} shows the simulation results of a gate-level full adder.
+\begin{itemize}
+	\item Initially, \mi{c}{x = 1}, \mi{c}{y = 0} and there is no carry in - as such the sum is 1 and there is no carry out
+	\item Adding a carry in results in the sum being 0 and a carry out
+	\item Setting \mi{c}{y = 1} results in both sum and carry out being active
+	\item With only a carry in, the sum is 1 and there is no carry out
+\end{itemize}
+
+\newpage
+\subsection{\mi{c}{arith_b_fn}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{arith_b_fn_tb}
+	\caption{\mi{c}{arith_b_fn} testbench results}
+	\label{fig:arithb}
+\end{figure}
+
+Figure~\ref{fig:arithb} shows the simulation results of the b logic function (implemented with a mux).
+\begin{itemize}
+	\item With \mi{c}{s = 00}, the output is 0 (all zeroes)
+	\item \mi{c}{s = 10}, the output is 0 (\mi{c}{!b})
+	\item \mi{c}{s = 01}, the output is 1 (\mi{c}{b})
+	\item \mi{c}{s = 11}, the output is 1 (all ones)
+\end{itemize}
+\emph{Note: The values of \mi{c}{s} for \mi{c}{!b} and \mi{c}{b} have been swapped in order to fix match the required micro op format}
+
+\newpage
+\subsection{\mi{c}{arithmetic_slice}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{arithmetic_slice_tb}
+	\caption{\mi{c}{arithmetic_slice} testbench results}
+	\label{fig:arithslice}
+\end{figure}
+
+Figure~\ref{fig:arithslice} shows the simulation results of the arithmetic slice, which is a 
+full adder with the second operand coming from the b logic function.
+
+\newpage
+\subsection{\mi{c}{logic_slice}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{logic_slice_tb}
+	\caption{\mi{c}{logic_slice} testbench results}
+	\label{fig:logicslice}
+\end{figure}
+
+Figure~\ref{fig:logicslice} shows the simulation results of the logic slice (implemented with a mux and simple gates).
+\begin{itemize}
+	\item Initially, \mi{c}{a = b = 1} and \mi{c}{s = 00} - the output is 1 (\mi{c}{a & b})
+	\item Changing \mi{c}{s = 01} gives 1 (\mi{c}{a | b})
+	\item With \mi{c}{s = 10} and \mi{c}{b = 0}, the output is 1 after gate propagation (\mi{c}{a ^ b})
+	\item \mi{c}{s = 11} gives 0 (\mi{c}{!a})
+\end{itemize}
+
+\newpage
+\subsection{\mi{c}{alu_slice}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{arithmetic_slice_tb}
+	\caption{\mi{c}{alu_slice} testbench results}
+	\label{fig:aluslice}
+\end{figure}
+
+Figure~\ref{fig:aluslice} shows the simulation results of the ALU slice, which is a 
+combination of an arithmetic slice and a logic slice, where the operation type (arithmetic or 
+logical) is selected by a mux (which is controlled by an additional \mi{c}{s} bit).
+
+\newpage
+\subsection{\mi{c}{alu}}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{alu_tb}
+	\caption{\mi{c}{alu} testbench results}
+	\label{fig:alu}
+\end{figure}
+
+Figure~\ref{fig:alu} shows the simulation results of the complete ALU, which is formed
+using VHDL \mi{vhdl}{generate} blocks to instantiate 16 ALU slices and connect them together.
+
+The functionality is identical to the ALU slice, except for the size of the operands (and 
+associated ripple delay). There is also a signed overflow flag, which is calculated by \mi{c}{xor}'ing 
+the carry in and carry out of the most significant bit's ALU slice. It can be seen functioning when
+adding \mi{c}{0xffff} (-1) and \mi{c}{0x8000} (-32768), giving an erroneous result of 
+\mi{c}{0x7fff} (32767).
 \end{document}
 # vim: nofoldenable

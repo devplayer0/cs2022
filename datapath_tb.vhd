@@ -35,7 +35,7 @@ begin
 
 	clock_proc: process
 	begin
-		wait for 64 ns;
+		wait for 32 ns;
 		clock <= not clock;
 	end process;
 	sim_proc: process
@@ -43,28 +43,32 @@ begin
 		-- r5 <- data in
 		data_in <= x"0007";
 		cw <= "10100000000000011";
-		wait for 128 ns;
+		wait for 64 ns;
 
 		-- r7 <- data in
 		data_in <= x"0009";
 		cw <= "11100000000000011";
-		wait for 128 ns;
+		wait for 64 ns;
 
 		-- data out = r5
 		cw <= "00000010100000000";
-		wait for 128 ns;
+		wait for 64 ns;
 
 		-- add r1, r5, r7
 		cw <= "00110111100001001";
-		wait for 128 ns;
+		wait for 64 ns;
 
 		-- xor r5, r0, r0
 		cw <= "10100000000110001";
-		wait for 128 ns;
+		wait for 64 ns;
+
+		-- data out = r5
+		cw <= "00000010100000000";
+		wait for 64 ns;
 
 		-- data out = r1
 		cw <= "00000000100000000";
-		wait for 128 ns;
+		wait for 64 ns;
 
 		std.env.stop;
 		wait;
