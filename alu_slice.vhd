@@ -49,7 +49,7 @@ begin
 	logic: logic_slice port map (
 		s => s(1 downto 0),
 		a => a,
-		b => a,
+		b => b,
 		z => z_logic
 	);
 
