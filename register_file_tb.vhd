@@ -7,23 +7,23 @@ end register_file_tb;
 architecture behavior of register_file_tb is
 	component register_file
 	port(
-		dst_reg:	in	std_logic_vector(2 downto 0);
+		dst_reg:	in	std_logic_vector(3 downto 0);
 		clock :		in	std_logic;
 		data :		in	std_logic_vector(15 downto 0);
 		load :		in	std_logic;
-		a_select :	in	std_logic_vector(2 downto 0);
-		b_select :	in	std_logic_vector(2 downto 0);
+		a_select :	in	std_logic_vector(3 downto 0);
+		b_select :	in	std_logic_vector(3 downto 0);
 		a : 		out	std_logic_vector(15 downto 0);
 		b : 		out	std_logic_vector(15 downto 0)
 	);
 	end component;
 
-	signal dst_reg:		std_logic_vector(2 downto 0);
+	signal dst_reg:		std_logic_vector(3 downto 0);
 	signal clock :		std_logic := '0';
 	signal data :		std_logic_vector(15 downto 0);
 	signal load :		std_logic;
-	signal a_select:	std_logic_vector(2 downto 0);
-	signal b_select:	std_logic_vector(2 downto 0);
+	signal a_select:	std_logic_vector(3 downto 0);
+	signal b_select:	std_logic_vector(3 downto 0);
 	signal a :			std_logic_vector(15 downto 0);
 	signal b :			std_logic_vector(15 downto 0);
 begin
@@ -45,22 +45,28 @@ begin
 	end process;
 	sim_proc: process
 	begin
-		dst_reg <= "010";
+		dst_reg <= "0010";
 		data <= x"dead";
 		load <= '1';
-		a_select <= "010";
+		a_select <= "0010";
 		wait for 20 ns;
 
 		data <= x"0000";
-		dst_reg <= "110";
+		dst_reg <= "0110";
 		load <= '0';
-		a_select <= "110";
+		a_select <= "0110";
 		wait for 20 ns;
 
-		dst_reg <= "111";
+		dst_reg <= "0111";
 		data <= x"beef";
 		load <= '1';
-		b_select <= "111";
+		b_select <= "0111";
+		wait for 20 ns;
+
+		dst_reg <= "1000";
+		data <= x"f00d";
+		load <= '1';
+		b_select <= "1000";
 		wait for 20 ns;
 
 		wait for 20 ns;

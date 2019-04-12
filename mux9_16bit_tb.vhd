@@ -1,13 +1,13 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity mux8_16bit_tb is
-end mux8_16bit_tb;
+entity mux9_16bit_tb is
+end mux9_16bit_tb;
 
-architecture behavior of mux8_16bit_tb is
-	component mux8_16bit
+architecture behavior of mux9_16bit_tb is
+	component mux9_16bit
 	port(
-		s :		in	std_logic_vector(2 downto 0);
+		s :		in	std_logic_vector(3 downto 0);
 		ln0 :	in	std_logic_vector(15 downto 0);
 		ln1 :	in	std_logic_vector(15 downto 0);
 		ln2 :	in	std_logic_vector(15 downto 0);
@@ -16,11 +16,12 @@ architecture behavior of mux8_16bit_tb is
 		ln5 :	in	std_logic_vector(15 downto 0);
 		ln6 :	in	std_logic_vector(15 downto 0);
 		ln7 :	in	std_logic_vector(15 downto 0);
+		ln8 :	in	std_logic_vector(15 downto 0);
 		z :		out	std_logic_vector(15 downto 0)
 	);
 	end component;
 
-	signal s :		std_logic_vector(2 downto 0);
+	signal s :		std_logic_vector(3 downto 0);
 	signal ln0 :	std_logic_vector(15 downto 0);
 	signal ln1 :	std_logic_vector(15 downto 0);
 	signal ln2 :	std_logic_vector(15 downto 0);
@@ -29,9 +30,10 @@ architecture behavior of mux8_16bit_tb is
 	signal ln5 :	std_logic_vector(15 downto 0);
 	signal ln6 :	std_logic_vector(15 downto 0);
 	signal ln7 :	std_logic_vector(15 downto 0);
+	signal ln8 :	std_logic_vector(15 downto 0);
 	signal z :		std_logic_vector(15 downto 0);
 begin
-	uut: mux8_16bit port map (
+	uut: mux9_16bit port map (
 		s => s,
 		ln0 => ln0,
 		ln1 => ln1,
@@ -41,6 +43,7 @@ begin
 		ln5 => ln5,
 		ln6 => ln6,
 		ln7 => ln7,
+		ln8 => ln8,
 		z => z
 	);
 
@@ -54,14 +57,18 @@ begin
 		ln5 <= x"f00d";
 		ln6 <= x"cafe";
 		ln7 <= x"d0d0";
+		ln8 <= x"d0d0";
 
-		s <= "000";
+		s <= "0000";
 		wait for 10 ns;
 
-		s <= "100";
+		s <= "0100";
 		wait for 10 ns;
 
-		s <= "110";
+		s <= "0110";
+		wait for 10 ns;
+
+		s <= "1000";
 		wait for 10 ns;
 
 		wait;

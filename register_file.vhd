@@ -3,28 +3,28 @@ use ieee.std_logic_1164.all;
 
 entity register_file is
 	port(
-		dst_reg:	in	std_logic_vector(2 downto 0);
+		dst_reg:	in	std_logic_vector(3 downto 0);
 		clock :		in	std_logic;
 		data :		in	std_logic_vector(15 downto 0);
 		load :		in	std_logic;
-		a_select :	in	std_logic_vector(2 downto 0) := "000";
-		b_select :	in	std_logic_vector(2 downto 0) := "000";
+		a_select :	in	std_logic_vector(3 downto 0) := "0000";
+		b_select :	in	std_logic_vector(3 downto 0) := "0000";
 		a : 		out	std_logic_vector(15 downto 0);
 		b : 		out	std_logic_vector(15 downto 0)
 	);
 end register_file;
 
 architecture behavior of register_file is
-	component decoder_3to8
+	component decoder_4to16
 		port(
-			a :	in	std_logic_vector(2 downto 0);
-			q :	out	std_logic_vector(0 to 7)
+			a :	in	std_logic_vector(3 downto 0);
+			q :	out	std_logic_vector(0 to 15)
 		);
 	end component;
 
-	component mux8_16bit
+	component mux9_16bit
 		port(
-			s :		in	std_logic_vector(2 downto 0);
+			s :		in	std_logic_vector(3 downto 0);
 			ln0 :	in	std_logic_vector(15 downto 0);
 			ln1 :	in	std_logic_vector(15 downto 0);
 			ln2 :	in	std_logic_vector(15 downto 0);
@@ -33,6 +33,7 @@ architecture behavior of register_file is
 			ln5 :	in	std_logic_vector(15 downto 0);
 			ln6 :	in	std_logic_vector(15 downto 0);
 			ln7 :	in	std_logic_vector(15 downto 0);
+			ln8 :	in	std_logic_vector(15 downto 0);
 			z :		out	std_logic_vector(15 downto 0)
 		);
 	end component;
@@ -46,11 +47,11 @@ architecture behavior of register_file is
 		);
 	end component;
 
-	signal dec_load_reg : std_logic_vector(0 to 7);
-	signal l_r0, l_r1, l_r2, l_r3, l_r4, l_r5, l_r6, l_r7 : std_logic;
-	signal r0_q, r1_q, r2_q, r3_q, r4_q, r5_q, r6_q, r7_q : std_logic_vector(15 downto 0);
+	signal dec_load_reg : std_logic_vector(0 to 15);
+	signal l_r0, l_r1, l_r2, l_r3, l_r4, l_r5, l_r6, l_r7, l_r8 : std_logic;
+	signal r0_q, r1_q, r2_q, r3_q, r4_q, r5_q, r6_q, r7_q, r8_q : std_logic_vector(15 downto 0);
 begin
-	dreg_decoder: decoder_3to8 port map (
+	dreg_decoder: decoder_4to16 port map (
 		a => dst_reg,
 		q => dec_load_reg
 	);
@@ -63,6 +64,7 @@ begin
 	l_r5 <= load and dec_load_reg(5);
 	l_r6 <= load and dec_load_reg(6);
 	l_r7 <= load and dec_load_reg(7);
+	l_r8 <= load and dec_load_reg(8);
 
 	reg0: reg16 port map (
 		load => l_r0,
@@ -112,8 +114,14 @@ begin
 		data => data,
 		q => r7_q
 	);
+	r8: reg16 port map (
+		load => l_r8,
+		clock => clock,
+		data => data,
+		q => r8_q
+	);
 
-	ra_mux: mux8_16bit port map (
+	ra_mux: mux9_16bit port map (
 		s => a_select,
 		ln0 => r0_q,
 		ln1 => r1_q,
@@ -123,9 +131,10 @@ begin
 		ln5 => r5_q,
 		ln6 => r6_q,
 		ln7 => r7_q,
+		ln8 => r8_q,
 		z => a
 	);
-	rb_mux: mux8_16bit port map (
+	rb_mux: mux9_16bit port map (
 		s => b_select,
 		ln0 => r0_q,
 		ln1 => r1_q,
@@ -135,6 +144,7 @@ begin
 		ln5 => r5_q,
 		ln6 => r6_q,
 		ln7 => r7_q,
+		ln8 => r8_q,
 		z => b
 	);
 end;
