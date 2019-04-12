@@ -26,5 +26,4 @@ begin
 		end if;
 		data_out <= mem(to_integer(unsigned(address(8 downto 0))));
 	end process;
-
 end behavioral;
