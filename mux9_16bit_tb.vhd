@@ -57,7 +57,7 @@ begin
 		ln5 <= x"f00d";
 		ln6 <= x"cafe";
 		ln7 <= x"d0d0";
-		ln8 <= x"d0d0";
+		ln8 <= x"feed";
 
 		s <= "0000";
 		wait for 10 ns;
@@ -69,6 +69,12 @@ begin
 		wait for 10 ns;
 
 		s <= "1000";
+		wait for 10 ns;
+
+		s <= "0111";
+		wait for 10 ns;
+
+		s <= "1010";
 		wait for 10 ns;
 
 		wait;

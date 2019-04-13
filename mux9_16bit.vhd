@@ -29,6 +29,6 @@ begin
 		ln5 when s = "0101" else
 		ln6 when s = "0110" else
 		ln7 when s = "0111" else
-		ln8 when s = "1000" else
+		ln8 when s(3) = '1' else
 		x"0000" after 1 ns;
 end behavioral;
