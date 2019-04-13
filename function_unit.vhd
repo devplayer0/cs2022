@@ -68,5 +68,5 @@ begin
 
 	f <= f_mux_out;
 	n <= f_mux_out(15);
-	z <= '0' when f_mux_out = x"0000" else '1';
+	z <= '1' when f_mux_out = x"0000" else '0';
 end;
