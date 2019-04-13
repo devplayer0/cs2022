@@ -23,6 +23,9 @@ architecture behavioral of control_memory is
 		8 =>		x"c0200a4", -- OR  - logical |
 		9 =>		x"c0200c4", -- XOR - logical ^
 		10 =>		x"c0200e4", -- NOT - logical ~
+		11 =>		x"c02000c", -- LD  - load from memory
+		12 =>		x"c020001", -- ST  - store to memory
+		13 =>		x"c020201", -- STI - store immediate to memory
 
 		192 =>		x"001c002", -- instruction fetch
 		193 =>		x"0030000", -- instruction execute
