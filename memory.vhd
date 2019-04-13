@@ -16,9 +16,11 @@ architecture behavioral of memory is
 begin
 	mem_proc: process(clock) is
 		variable mem : mem_t := (
-			1 => x"dead",
-			2 => x"beef",
-			others => x"0000"
+			0 =>		x"0203", -- adi r0, r0, #3
+			1 =>		x"0242", -- adi r1, r0, #2
+			2 =>		x"0000", -- halt
+
+			others =>	x"0000"
 		);
 	begin
 		if rising_edge(clock) and load = '1' then

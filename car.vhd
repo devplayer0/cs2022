@@ -16,7 +16,7 @@ begin
 		variable cur_value : unsigned(7 downto 0) := x"00";
 	begin
 		if (reset = '1') then
-			cur_value := x"00";
+			cur_value := x"c0";
 		elsif (rising_edge(clock)) then
 			if load = '1' then
 				cur_value := unsigned(to_load);

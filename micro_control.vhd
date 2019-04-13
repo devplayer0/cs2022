@@ -4,11 +4,11 @@ use ieee.std_logic_1164.all;
 entity micro_control is
 	port(
 		reset, clock :			in	std_logic;
-		mem_data :				in std_logic_vector(15 downto 0);
-		flags :					in std_logic_vector(3 downto 0);
+		mem_data :				in	std_logic_vector(15 downto 0);
+		flags :					in	std_logic_vector(3 downto 0);
 		dp_cw :					out	std_logic_vector(19 downto 0);
-		addr_select, mem_load :	out std_logic;
-		cur_pc :				out std_logic_vector(15 downto 0)
+		addr_select, mem_load :	out	std_logic;
+		cur_pc :				out	std_logic_vector(15 downto 0)
 	);
 end micro_control;
 
@@ -127,7 +127,7 @@ begin
 	);
 
 	dp_cw(19) <= mem_cw(12); -- temp reg
-	dp_cw(17) <= mem_cw(11);
+	dp_cw(15) <= mem_cw(11);
 	dp_cw(11) <= mem_cw(10);
 	dp_cw(7) <= mem_cw(9); -- b data from register or constant
 	dp_cw(6 downto 2) <= mem_cw(8 downto 4); -- function select
