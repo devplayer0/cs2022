@@ -31,6 +31,7 @@ architecture behavioral of control_memory is
 		15 =>		x"8021004", -- SL  - shift left by register (stores source in r8), dst and a must be the same!
 		16 =>		x"8821004", -- SRI - shift right by immediate (stores source in r8), dst and a must be the same!
 		17 =>		x"8721004", -- SR  - shift right by register (stores source in r8), dst and a must be the same!
+		18 =>		x"c022000", -- B   - unconditional branch
 
 		-- left shift
 		128 =>		x"8220104", -- copy the shift amount into dst (from register)
@@ -50,7 +51,7 @@ architecture behavioral of control_memory is
 		140 =>		x"8920000", -- goto checking shift done
 		141 =>		x"c020804", -- set dst to r8 and goto IF
 
-		192 =>		x"000c002", -- instruction fetch
+		192 =>		x"000c002", -- instruction fetch (and increment pc)
 		193 =>		x"0030000", -- instruction execute
 
 		others =>	x"0020000"  -- go to halt instruction if unknown opcode
