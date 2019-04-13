@@ -29,7 +29,7 @@ begin
 		wait for 5 ns;
 
 		reset <= '0';
-		wait for 4096 ns;
+		wait for 12288 ns;
 
 		std.env.stop;
 		wait;

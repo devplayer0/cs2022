@@ -12,6 +12,7 @@ end control_memory;
 architecture behavioral of control_memory is
 	type mem_t is array(0 to 255) of std_logic_vector(27 downto 0);
 	signal mem : mem_t := (
+		-- main opcode table
 		0 =>		x"0020000", -- HLT - halt (loop forever)
 		1 =>		x"c020224", -- ADI - add immediate
 		2 =>		x"c020254", -- SUI - subtract immediate
@@ -26,8 +27,30 @@ architecture behavioral of control_memory is
 		11 =>		x"c02000c", -- LD  - load from memory
 		12 =>		x"c020001", -- ST  - store to memory
 		13 =>		x"c020201", -- STI - store immediate to memory
+		14 =>		x"8121004", -- SLI - shift left by immediate (stores source in r8), dst and a must be the same!
+		15 =>		x"8021004", -- SL  - shift left by register (stores source in r8), dst and a must be the same!
+		16 =>		x"8821004", -- SRI - shift right by immediate (stores source in r8), dst and a must be the same!
+		17 =>		x"8721004", -- SR  - shift right by register (stores source in r8), dst and a must be the same!
 
-		192 =>		x"001c002", -- instruction fetch
+		-- left shift
+		128 =>		x"8220104", -- copy the shift amount into dst (from register)
+		129 =>		x"0000304", -- copy the shift amount into dst (from immediate)
+		130 =>		x"8680000", -- is the shift amount (in a) equal to 0? if so, go to setting dst to r8. otherwise, continue.
+		131 =>		x"0001584", -- shift r8 left by one
+		132 =>		x"0000064", -- decrement a
+		133 =>		x"8220000", -- goto checking shift done
+		134 =>		x"c020804", -- set dst to r8 and goto IF
+
+		-- right shift
+		135 =>		x"8920104", -- copy the shift amount into dst (from register)
+		136 =>		x"0000304", -- copy the shift amount into dst (from immediate)
+		137 =>		x"8d80000", -- is the shift amount (in a) equal to 0? if so, go to setting dst to r8. otherwise, continue.
+		138 =>		x"0001544", -- shift r8 right by one
+		139 =>		x"0000064", -- decrement a
+		140 =>		x"8920000", -- goto checking shift done
+		141 =>		x"c020804", -- set dst to r8 and goto IF
+
+		192 =>		x"000c002", -- instruction fetch
 		193 =>		x"0030000", -- instruction execute
 
 		others =>	x"0020000"  -- go to halt instruction if unknown opcode
