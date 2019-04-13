@@ -19,7 +19,7 @@ architecture behavioral of control_memory is
 		192 =>		x"001c002", -- instruction fetch
 		193 =>		x"0030000", -- instruction execute
 
-		others =>	x"0000000"
+		others =>	x"0020000"  -- go to halt instruction if unknown opcode
 	);
 begin
 	cw <= mem(to_integer(unsigned(address)));
