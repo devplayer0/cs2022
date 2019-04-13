@@ -15,10 +15,10 @@ entity register_file is
 end register_file;
 
 architecture behavior of register_file is
-	component decoder_4to16
+	component decoder_4to9
 		port(
 			a :	in	std_logic_vector(3 downto 0);
-			q :	out	std_logic_vector(0 to 15)
+			q :	out	std_logic_vector(0 to 8)
 		);
 	end component;
 
@@ -47,11 +47,11 @@ architecture behavior of register_file is
 		);
 	end component;
 
-	signal dec_load_reg : std_logic_vector(0 to 15);
+	signal dec_load_reg : std_logic_vector(0 to 8);
 	signal l_r0, l_r1, l_r2, l_r3, l_r4, l_r5, l_r6, l_r7, l_r8 : std_logic;
 	signal r0_q, r1_q, r2_q, r3_q, r4_q, r5_q, r6_q, r7_q, r8_q : std_logic_vector(15 downto 0);
 begin
-	dreg_decoder: decoder_4to16 port map (
+	dreg_decoder: decoder_4to9 port map (
 		a => dst_reg,
 		q => dec_load_reg
 	);
