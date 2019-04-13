@@ -114,7 +114,7 @@ begin
 		data => data,
 		q => r7_q
 	);
-	r8: reg16 port map (
+	reg8: reg16 port map (
 		load => l_r8,
 		clock => clock,
 		data => data,
