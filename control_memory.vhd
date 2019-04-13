@@ -15,6 +15,10 @@ architecture behavioral of control_memory is
 		0 =>		x"0020000", -- HLT - halt (loop forever)
 		1 =>		x"c020224", -- ADI - add immediate
 		2 =>		x"c020254", -- SUI - subtract immediate
+		3 =>		x"c020014", -- INC - increment register
+		4 =>		x"c020064", -- DEC - decrement register
+		5 =>		x"c020024", -- ADD - add registers
+		6 =>		x"c020054", -- SUB - subtract registers
 
 		192 =>		x"001c002", -- instruction fetch
 		193 =>		x"0030000", -- instruction execute
