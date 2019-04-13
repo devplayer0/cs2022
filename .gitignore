@@ -1,5 +1,5 @@
 *_tb
 
 *.o
-*.vcd
+*.ghw
 work-*.cf

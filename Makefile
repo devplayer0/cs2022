@@ -10,7 +10,7 @@ BENCHES = mux4_tb decoder_4to16_tb mux9_16bit_tb mux2_16bit_tb full_adder_tb \
 		  logic_slice_tb arith_b_fn_tb arithmetic_slice_tb alu_slice_tb \
 		  reg16_tb shifter_tb alu_tb register_file_tb function_unit_tb memory_tb \
 		  pc_tb pc_extend_tb flag_mux_tb control_memory_tb mux2_8bit_tb \
-		  car_tb datapath_tb
+		  car_tb datapath_tb computer_tb
 
 default: all
 all: $(BENCHES)
@@ -23,10 +23,10 @@ $(BENCHES): %: %.o | $(MODULES:=.o)
 	ghdl -e -o $@ $(GHDLFLAGS) $(<:.o=)
 
 run_%: %
-	ghdl -r $< --vcd=$<.vcd
+	ghdl -r $< --wave=$<.ghw
 
 clean:
 	-rm -f *.o
 	-rm -f $(BENCHES)
-	-rm -f *.vcd
+	-rm -f *.ghw
 	-rm -f work-*.cf
