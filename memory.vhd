@@ -18,7 +18,8 @@ begin
 		variable mem : mem_t := (
 			0 =>		x"0203", -- adi r0, r0, #3
 			1 =>		x"0242", -- adi r1, r0, #2
-			2 =>		x"0000", -- halt
+			2 =>		x"048c", -- sui r2, r1, #4
+			3 =>		x"0000", -- halt
 
 			others =>	x"0000"
 		);

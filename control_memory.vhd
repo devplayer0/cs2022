@@ -14,6 +14,7 @@ architecture behavioral of control_memory is
 	signal mem : mem_t := (
 		0 =>		x"0020000", -- HLT - halt (loop forever)
 		1 =>		x"c020224", -- ADI - add immediate
+		2 =>		x"c020254", -- SUI - subtract immediate
 
 		192 =>		x"001c002", -- instruction fetch
 		193 =>		x"0030000", -- instruction execute
