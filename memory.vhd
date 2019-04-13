@@ -23,9 +23,12 @@ begin
 			4 =>		x"0918", -- dec r4, r3
 			5 =>		x"0b59", -- add r5, r3, r1
 			6 =>		x"0daa", -- sub r6, r5, r2
-			7 =>		x"0000", -- halt
+			7 =>		x"0fdd", -- and r7, r3, r5 ; (2 & 7)
+			8 =>		x"11c8", -- or r7, r1, r0  ; (5 | 3)
+			9 =>		x"13f5", -- xor r7, r6, r5 ; (6 ^ 7)
+			10 =>		x"15c8", -- not r7, r1     ; (~5)
 
-			others =>	x"0000"
+			others =>	x"0000"  -- hlt
 		);
 	begin
 		if rising_edge(clock) and load = '1' then

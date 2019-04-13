@@ -19,6 +19,10 @@ architecture behavioral of control_memory is
 		4 =>		x"c020064", -- DEC - decrement register
 		5 =>		x"c020024", -- ADD - add registers
 		6 =>		x"c020054", -- SUB - subtract registers
+		7 =>		x"c020084", -- AND - logical &
+		8 =>		x"c0200a4", -- OR  - logical |
+		9 =>		x"c0200c4", -- XOR - logical ^
+		10 =>		x"c0200e4", -- NOT - logical ~
 
 		192 =>		x"001c002", -- instruction fetch
 		193 =>		x"0030000", -- instruction execute
