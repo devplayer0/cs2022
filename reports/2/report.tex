@@ -203,6 +203,7 @@ Any locations in control memory not otherwise set are filled with \mi{vhdl}{x"00
 \newpage
 \smallskip
 A few of the instructions (left / right shift and conditional branching) require additional microcode (note the next address portion of the control words above jumping to this additional code):
+\begin{listing}[ht]
 \begin{minted}[tabsize=4]{vhdl}
 	-- left shift
 	128 =>		x"8220104", -- copy the shift amount into dst (from register)
@@ -226,11 +227,13 @@ A few of the instructions (left / right shift and conditional branching) require
 	142 =>		x"1280000", -- goto unconditional branch if zero
 	143 =>		x"c020000", -- otherwise continue as normal
 \end{minted}
+\label{label:extramc}
+\end{listing}
 
 
 \newpage
 \subsection{Test program}
-Below is the sample program as initialized into the start of memory.
+Below is the sample program as initialized into the start of memory. An ARM-like assembler syntax is used.
 \begin{minted}{vhdl}
 x"0203", -- adi r0, r0, 3
 x"0242", -- adi r1, r0, 2
@@ -280,6 +283,80 @@ x"fe00", -- nop
 
 x"0000"  -- hlt
 \end{minted}
+
+\newpage
+\subsection{Final testbench highlights}
+This section will highlight the testbench results from running the above program.
+
+\subsubsection{First two instructions}
+The snippet below shows in detail the execution of the first to instructions (\mi{c}{adi r0, r0, 3} and 
+\mi{c}{adi r1, r0, 2}):
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{first_two}
+	\caption{First two instructions}
+\end{figure}
+
+\newpage
+\subsubsection{Up to first store}
+The snippet below shows execution until the first \mi{c}{st} instruction. Red lines indicate which register 
+changes correspond to which instructions and purple lines show the PC pointing to the next instruction to be 
+executed.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{until_store}
+	\caption{Execution up to the first store instruction}
+\end{figure}
+
+\newpage
+\subsubsection{Storing and loading}
+The snippet below shows execution of the store and load instructions. Note when the current main memory address 
+changes from pointing to the next instruction being fetched to the pointer in \mi{c}{r5}.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{store_load}
+	\caption{Load and store instructions}
+\end{figure}
+
+\newpage
+\subsubsection{Shifting}
+The snippet below shows a left shift by an immediate value. Note that the instruction takes numerous cycles to 
+complete, running the microcode program for left shifts from above. The destination 
+register holds a counter to keep track of how many shifts have been performed and the temporary register holds 
+the shifted value. Once complete, this value is transferred back into the destination register.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{store_load}
+	\caption{Load and store instructions}
+\end{figure}
+
+\newpage
+\subsubsection{Unconditional branching}
+The snippet below shows 3 unconditional branches. Note how the program counter changes according to the 
+instructions instead of incrementing. See the sample program above and registers to see that instructions are 
+skipped over by the branching.
+
+Note also how the offsets are chosen since the PC always points to the instruction after the one currently 
+executing.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{unc_branch}
+	\caption{Unconditional branching}
+\end{figure}
+
+\newpage
+\subsubsection{Conditional branching}
+The snippet below shows a simple ``\mi{c}{for}-loop''. Notice the program repeatedly returns to the \mi{c}{BEQ} 
+instruction until \mi{c}{r1} is \mi{c}{0}. At this point, execution continues (\mi{c}{adi r1, r1, 7} and two 
+\mi{c}{NOP}'s) until halting at the end of the test program.
+
+Note also how the \mi{c}{BEQ} takes longer to execute, as multiple microcode operations must execute to determine
+whether the PC should be loaded with the provided offset or not.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{cond_branch}
+	\caption{Conditional branching}
+\end{figure}
 
 \end{document}
 # vim: nofoldenable
