@@ -40,7 +40,10 @@ begin
 		wait for 64 ns;
 
 		reset <= '1';
-		wait for 64 ns;
+		load <= '0';
+		wait for 5 ns;
+		reset <= '0';
+		wait for 96 ns;
 
 		std.env.stop;
 		wait;
