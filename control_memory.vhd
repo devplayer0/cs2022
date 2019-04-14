@@ -33,6 +33,7 @@ architecture behavioral of control_memory is
 		17 =>		x"8721004", -- SR  - shift right by register (stores source in r8), dst and a must be the same!
 		18 =>		x"c022000", -- B   - unconditional branch
 		19 =>		x"8e20000", -- BEQ - branch if register is zero ("equal")
+		127 =>		x"c020000", -- NOP - do nothing
 
 		-- left shift
 		128 =>		x"8220104", -- copy the shift amount into dst (from register)

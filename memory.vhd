@@ -59,6 +59,8 @@ begin
 			35 =>		x"0449", -- sui r1, r1, 1
 			36 =>		x"25c5", -- b -3
 			37 =>		x"024f", -- adi r1, r1, 7
+			38 =>		x"fe00", -- nop
+			39 =>		x"fe00", -- nop
 
 			others =>	x"0000"  -- hlt
 		);
