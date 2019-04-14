@@ -32,6 +32,7 @@ architecture behavioral of control_memory is
 		16 =>		x"8821004", -- SRI - shift right by immediate (stores source in r8), dst and a must be the same!
 		17 =>		x"8721004", -- SR  - shift right by register (stores source in r8), dst and a must be the same!
 		18 =>		x"c022000", -- B   - unconditional branch
+		19 =>		x"8e20000", -- BEQ - branch if register is zero ("equal")
 
 		-- left shift
 		128 =>		x"8220104", -- copy the shift amount into dst (from register)
@@ -50,6 +51,10 @@ architecture behavioral of control_memory is
 		139 =>		x"0000064", -- decrement a
 		140 =>		x"8920000", -- goto checking shift done
 		141 =>		x"c020804", -- set dst to r8 and goto IF
+
+		-- beq
+		142 =>		x"1280000", -- goto unconditional branch if zero
+		143 =>		x"c020000", -- otherwise continue as normal
 
 		192 =>		x"000c002", -- instruction fetch (and increment pc)
 		193 =>		x"0030000", -- instruction execute
