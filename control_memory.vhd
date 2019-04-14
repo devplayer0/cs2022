@@ -63,5 +63,5 @@ architecture behavioral of control_memory is
 		others =>	x"0020000"  -- go to halt instruction if unknown opcode
 	);
 begin
-	cw <= mem(to_integer(unsigned(address)));
+	cw <= mem(to_integer(unsigned(address))) after 1 ns;
 end behavioral;

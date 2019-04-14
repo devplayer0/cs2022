@@ -23,7 +23,13 @@ begin
 	sim_proc: process
 	begin
 		address <= x"00";
-		wait for 10 ns;
+		wait for 5 ns;
+
+		address <= x"01";
+		wait for 5 ns;
+
+		address <= x"02";
+		wait for 5 ns;
 
 		wait;
 	end process;
