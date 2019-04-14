@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 
 entity datapath is
 	port(
-		clock :					in	std_logic;
+		reset, clock :			in	std_logic;
 		cw :					in	std_logic_vector(19 downto 0);
 		const, data_in :		in	std_logic_vector(15 downto 0);
 		address_out, data_out :	out	std_logic_vector(15 downto 0);
@@ -23,14 +23,13 @@ architecture behavior of datapath is
 
 	component register_file
 		port(
-			dst_reg:	in	std_logic_vector(3 downto 0);
-			clock :		in	std_logic;
-			data :		in	std_logic_vector(15 downto 0);
-			load :		in	std_logic;
-			a_select :	in	std_logic_vector(3 downto 0) := "0000";
-			b_select :	in	std_logic_vector(3 downto 0) := "0000";
-			a : 		out	std_logic_vector(15 downto 0);
-			b : 		out	std_logic_vector(15 downto 0)
+			reset, load, clock :	in	std_logic;
+			dst_reg:				in	std_logic_vector(3 downto 0);
+			data :					in	std_logic_vector(15 downto 0);
+			a_select :				in	std_logic_vector(3 downto 0) := "0000";
+			b_select :				in	std_logic_vector(3 downto 0) := "0000";
+			a : 					out	std_logic_vector(15 downto 0);
+			b : 					out	std_logic_vector(15 downto 0)
 		);
 	end component;
 
@@ -47,6 +46,7 @@ architecture behavior of datapath is
 begin
 	registers: register_file port map (
 		dst_reg => cw(19 downto 16),
+		reset => reset,
 		clock => clock,
 		data => md_out,
 		load => cw(0),

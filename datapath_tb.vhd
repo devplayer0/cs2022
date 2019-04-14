@@ -7,7 +7,7 @@ end datapath_tb;
 architecture behavior of datapath_tb is
 	component datapath
 		port(
-			clock :					in	std_logic;
+			reset, clock :			in	std_logic;
 			cw :					in	std_logic_vector(19 downto 0);
 			const, data_in :		in	std_logic_vector(15 downto 0);
 			address_out, data_out :	out	std_logic_vector(15 downto 0);
@@ -15,12 +15,13 @@ architecture behavior of datapath_tb is
 		);
 	end component;
 
-	signal clock :									std_logic := '0';
+	signal reset, clock :							std_logic := '0';
 	signal v, c, n, z :								std_logic;
 	signal const, data_in, address_out, data_out :	std_logic_vector(15 downto 0);
 	signal cw :										std_logic_vector(19 downto 0);
 begin
 	uut: datapath port map (
+		reset => reset,
 		clock => clock,
 		cw => cw,
 		const => const,
@@ -40,6 +41,11 @@ begin
 	end process;
 	sim_proc: process
 	begin
+		reset <= '1';
+		wait for 2 ns;
+		reset <= '0';
+		wait for 2 ns;
+
 		-- r5 <- data in
 		data_in <= x"0007";
 		cw <= "01010000000000000011";

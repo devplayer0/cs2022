@@ -28,7 +28,7 @@ architecture behavior of computer is
 
 	component datapath is
 		port(
-			clock :					in	std_logic;
+			reset, clock :			in	std_logic;
 			cw :					in	std_logic_vector(19 downto 0);
 			const, data_in :		in	std_logic_vector(15 downto 0);
 			address_out, data_out :	out	std_logic_vector(15 downto 0);
@@ -53,6 +53,7 @@ architecture behavior of computer is
 	signal mc_cw : std_logic_vector(19 downto 0);
 begin
 	dp: datapath port map (
+		reset => reset,
 		clock => clock,
 		cw => mc_cw,
 		const => zfilled_breg,

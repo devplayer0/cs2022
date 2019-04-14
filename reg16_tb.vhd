@@ -7,19 +7,18 @@ end reg16_tb;
 architecture behavior of reg16_tb is
 	component reg16
 	port(
-		load :	in	std_logic;
-		clock :	in	std_logic;
-		data :	in	std_logic_vector(15 downto 0);
-		q :		out	std_logic_vector(15 downto 0)
+		reset, load, clock :	in	std_logic;
+		data :					in	std_logic_vector(15 downto 0);
+		q :						out	std_logic_vector(15 downto 0)
 	);
 	end component;
 
-	signal load :	std_logic := '0';
-	signal clock :	std_logic := '0';
-	signal data :	std_logic_vector(15 downto 0);
-	signal q :		std_logic_vector(15 downto 0);
+	signal reset, load, clock :	std_logic := '0';
+	signal data :				std_logic_vector(15 downto 0);
+	signal q :					std_logic_vector(15 downto 0);
 begin
 	uut: reg16 port map (
+		reset => reset,
 		load => load,
 		clock => clock,
 		data => data,
@@ -33,6 +32,11 @@ begin
 	end process;
 	sim_proc: process
 	begin
+		reset <= '1';
+		wait for 20 ns;
+		reset <= '0';
+		wait for 20 ns;
+
 		data <= x"dead";
 		load <= '1';
 		wait for 20 ns;
@@ -46,6 +50,9 @@ begin
 		wait for 20 ns;
 
 		load <= '0';
+		wait for 20 ns;
+
+		reset <= '1';
 		wait for 20 ns;
 
 		std.env.stop;

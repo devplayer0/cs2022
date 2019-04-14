@@ -7,28 +7,27 @@ end register_file_tb;
 architecture behavior of register_file_tb is
 	component register_file
 	port(
-		dst_reg:	in	std_logic_vector(3 downto 0);
-		clock :		in	std_logic;
-		data :		in	std_logic_vector(15 downto 0);
-		load :		in	std_logic;
-		a_select :	in	std_logic_vector(3 downto 0);
-		b_select :	in	std_logic_vector(3 downto 0);
-		a : 		out	std_logic_vector(15 downto 0);
-		b : 		out	std_logic_vector(15 downto 0)
+		reset, load, clock :	in	std_logic;
+		dst_reg:				in	std_logic_vector(3 downto 0);
+		data :					in	std_logic_vector(15 downto 0);
+		a_select :				in	std_logic_vector(3 downto 0);
+		b_select :				in	std_logic_vector(3 downto 0);
+		a : 					out	std_logic_vector(15 downto 0);
+		b : 					out	std_logic_vector(15 downto 0)
 	);
 	end component;
 
-	signal dst_reg:		std_logic_vector(3 downto 0);
-	signal clock :		std_logic := '0';
-	signal data :		std_logic_vector(15 downto 0);
-	signal load :		std_logic;
-	signal a_select:	std_logic_vector(3 downto 0);
-	signal b_select:	std_logic_vector(3 downto 0);
-	signal a :			std_logic_vector(15 downto 0);
-	signal b :			std_logic_vector(15 downto 0);
+	signal reset, load, clock :		std_logic := '0';
+	signal dst_reg:					std_logic_vector(3 downto 0);
+	signal data :					std_logic_vector(15 downto 0);
+	signal a_select:				std_logic_vector(3 downto 0);
+	signal b_select:				std_logic_vector(3 downto 0);
+	signal a :						std_logic_vector(15 downto 0);
+	signal b :						std_logic_vector(15 downto 0);
 begin
 	uut: register_file port map (
 		dst_reg => dst_reg,
+		reset => reset,
 		clock => clock,
 		data => data,
 		load => load,
@@ -45,6 +44,11 @@ begin
 	end process;
 	sim_proc: process
 	begin
+		reset <= '1';
+		wait for 2 ns;
+		reset <= '0';
+		wait for 2 ns;
+
 		dst_reg <= "0010";
 		data <= x"dead";
 		load <= '1';

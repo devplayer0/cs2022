@@ -24,10 +24,9 @@ architecture behavior of micro_control is
 
 	component reg16
 		port(
-			load :	in	std_logic;
-			clock :	in	std_logic;
-			data :	in	std_logic_vector(15 downto 0);
-			q :		out	std_logic_vector(15 downto 0)
+			reset, load, clock :	in	std_logic;
+			data :					in	std_logic_vector(15 downto 0);
+			q :						out	std_logic_vector(15 downto 0)
 		);
 	end component;
 
@@ -76,6 +75,7 @@ architecture behavior of micro_control is
 	signal mem_cw : std_logic_vector(27 downto 0);
 begin
 	ir: reg16 port map (
+		reset => reset,
 		load => mem_cw(15),
 		clock => clock,
 		data => mem_data,

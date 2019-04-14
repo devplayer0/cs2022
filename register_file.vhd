@@ -3,14 +3,13 @@ use ieee.std_logic_1164.all;
 
 entity register_file is
 	port(
-		dst_reg:	in	std_logic_vector(3 downto 0);
-		clock :		in	std_logic;
-		data :		in	std_logic_vector(15 downto 0);
-		load :		in	std_logic;
-		a_select :	in	std_logic_vector(3 downto 0) := "0000";
-		b_select :	in	std_logic_vector(3 downto 0) := "0000";
-		a : 		out	std_logic_vector(15 downto 0);
-		b : 		out	std_logic_vector(15 downto 0)
+		reset, load, clock :	in	std_logic;
+		dst_reg:				in	std_logic_vector(3 downto 0);
+		data :					in	std_logic_vector(15 downto 0);
+		a_select :				in	std_logic_vector(3 downto 0) := "0000";
+		b_select :				in	std_logic_vector(3 downto 0) := "0000";
+		a : 					out	std_logic_vector(15 downto 0);
+		b : 					out	std_logic_vector(15 downto 0)
 	);
 end register_file;
 
@@ -40,10 +39,9 @@ architecture behavior of register_file is
 
 	component reg16
 		port(
-			load :	in	std_logic;
-			clock :	in	std_logic;
-			data :	in	std_logic_vector(15 downto 0);
-			q :		out	std_logic_vector(15 downto 0)
+			reset, load, clock :	in	std_logic;
+			data :					in	std_logic_vector(15 downto 0);
+			q :						out	std_logic_vector(15 downto 0)
 		);
 	end component;
 
@@ -67,54 +65,63 @@ begin
 	l_r8 <= load and dec_load_reg(8);
 
 	reg0: reg16 port map (
+		reset => reset,
 		load => l_r0,
 		clock => clock,
 		data => data,
 		q => r0_q
 	);
 	reg1: reg16 port map (
+		reset => reset,
 		load => l_r1,
 		clock => clock,
 		data => data,
 		q => r1_q
 	);
 	reg2: reg16 port map (
+		reset => reset,
 		load => l_r2,
 		clock => clock,
 		data => data,
 		q => r2_q
 	);
 	reg3: reg16 port map (
+		reset => reset,
 		load => l_r3,
 		clock => clock,
 		data => data,
 		q => r3_q
 	);
 	reg4: reg16 port map (
+		reset => reset,
 		load => l_r4,
 		clock => clock,
 		data => data,
 		q => r4_q
 	);
 	reg5: reg16 port map (
+		reset => reset,
 		load => l_r5,
 		clock => clock,
 		data => data,
 		q => r5_q
 	);
 	reg6: reg16 port map (
+		reset => reset,
 		load => l_r6,
 		clock => clock,
 		data => data,
 		q => r6_q
 	);
 	reg7: reg16 port map (
+		reset => reset,
 		load => l_r7,
 		clock => clock,
 		data => data,
 		q => r7_q
 	);
 	reg8: reg16 port map (
+		reset => reset,
 		load => l_r8,
 		clock => clock,
 		data => data,
