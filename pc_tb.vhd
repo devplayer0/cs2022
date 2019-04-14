@@ -40,12 +40,16 @@ begin
 		wait for 64 ns;
 
 		inc <= '1';
-		wait for 64 ns;
+		wait for 100 ns;
 
 		inc <= '0';
 		load <= '1';
 		offset <= x"0005";
-		wait for 128 ns;
+		wait for 64 ns;
+
+		load <= '0';
+		inc <= '1';
+		wait for 100 ns;
 
 		std.env.stop;
 		wait;
