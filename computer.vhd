@@ -19,10 +19,10 @@ architecture behavior of computer is
 
 	component memory is
 		port(
-			address :		in	std_logic_vector(15 downto 0);
-			data_in :		in	std_logic_vector(15 downto 0);
-			clock, load : 	in	std_logic;
-			data_out :		out	std_logic_vector(15 downto 0)
+			address :	in	std_logic_vector(15 downto 0);
+			data_in :	in	std_logic_vector(15 downto 0);
+			load : 		in	std_logic;
+			data_out :	out	std_logic_vector(15 downto 0)
 		);
 	end component;
 
@@ -86,7 +86,6 @@ begin
 		z => mmux_out
 	);
 	mem: memory port map (
-		clock => clock,
 		address => mmux_out,
 		data_in => mem_in,
 		load => mem_load,
