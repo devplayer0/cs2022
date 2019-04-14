@@ -141,5 +141,145 @@ Figure~\ref{fig:pc} shows the simulation results of the Program Counter (PC).
 	\item When \mi{c}{load} is high, the PC will add the input offset to its current value on the next clock.
 \end{itemize}
 
+\newpage
+\section{Final processor}
+This section will discuss the implemented instructions and results of the test program which utilises them.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{computer_overview}
+	\caption{Complete processor testbench}
+	\label{fig:coverview}
+\end{figure}
+
+\newpage
+\subsection{Implemented instructions}
+Below is a table of all of the implemented instructions and their corresponding opcodes and microcode words.
+\begin{center}
+\begin{tabular}{|l|l|l||l|}
+	\hline
+	\textbf{Opcode} & \textbf{Micro-op} & \textbf{Name} & \textbf{Description} \\
+	\hline
+
+	0   & \mi{vhdl}{x"0020000"} & \mi{c}{HLT} & halt (loop forever) \\
+	1   & \mi{vhdl}{x"c020224"} & \mi{c}{ADI} & add immediate \\
+	2   & \mi{vhdl}{x"c020254"} & \mi{c}{SUI} & subtract immediate \\
+	3   & \mi{vhdl}{x"c020014"} & \mi{c}{INC} & increment register \\
+	4   & \mi{vhdl}{x"c020064"} & \mi{c}{DEC} & decrement register \\
+	5   & \mi{vhdl}{x"c020024"} & \mi{c}{ADD} & add registers \\
+	6   & \mi{vhdl}{x"c020054"} & \mi{c}{SUB} & subtract registers \\
+	7   & \mi{vhdl}{x"c020084"} & \mi{c}{AND} & logical \mi{c}{&} \\
+	8   & \mi{vhdl}{x"c0200a4"} & \mi{c}{OR}  & logical \mi{c}{|} \\
+	9   & \mi{vhdl}{x"c0200c4"} & \mi{c}{XOR} & logical \mi{c}{^} \\
+	10  & \mi{vhdl}{x"c0200e4"} & \mi{c}{NOT} & logical \mi{c}{~} \\
+	11  & \mi{vhdl}{x"c02000c"} & \mi{c}{LD}  & load from memory \\
+	12  & \mi{vhdl}{x"c020001"} & \mi{c}{ST}  & store to memory \\
+	13  & \mi{vhdl}{x"c020201"} & \mi{c}{STI} & store immediate to memory \\
+	14  & \mi{vhdl}{x"8121004"} & \mi{c}{SLI} & shift left by immediate (stores source in r8), dst and a must be the same! \\
+	15  & \mi{vhdl}{x"8021004"} & \mi{c}{SL}  & shift left by register (stores source in r8), dst and a must be the same! \\
+	16  & \mi{vhdl}{x"8821004"} & \mi{c}{SRI} & shift right by immediate (stores source in r8), dst and a must be the same! \\
+	17  & \mi{vhdl}{x"8721004"} & \mi{c}{SR}  & shift right by register (stores source in r8), dst and a must be the same! \\
+	18  & \mi{vhdl}{x"c022000"} & \mi{c}{B}   & unconditional branch \\
+	19  & \mi{vhdl}{x"8e20000"} & \mi{c}{BEQ} & branch if register is zero ("equal") \\
+	127 & \mi{vhdl}{x"c020000"} & \mi{c}{NOP} & do nothing \\
+	\hline
+\end{tabular}
+\end{center}
+
+\smallskip
+In order to fetch and execute the next instruction, there are two additional micro-ops towards the end of the 
+control memory:
+
+\begin{minted}[tabsize=4]{vhdl}
+	192 =>		x"000c002", -- instruction fetch (and increment pc)
+	193 =>		x"0030000", -- instruction execute
+\end{minted}
+
+\smallskip
+Any locations in control memory not otherwise set are filled with \mi{vhdl}{x"002000"} (\mi{c}{HLT}) so that undefined opcodes stop the processor immediately:
+\begin{minted}[tabsize=4]{vhdl}
+	others =>	x"0020000"  -- go to halt instruction if unknown opcode
+\end{minted}
+
+\newpage
+\smallskip
+A few of the instructions (left / right shift and conditional branching) require additional microcode (note the next address portion of the control words above jumping to this additional code):
+\begin{minted}[tabsize=4]{vhdl}
+	-- left shift
+	128 =>		x"8220104", -- copy the shift amount into dst (from register)
+	129 =>		x"0000304", -- copy the shift amount into dst (from immediate)
+	130 =>		x"8680000", -- is the shift amount (in a) equal to 0? if so, go to setting dst to r8. otherwise, continue.
+	131 =>		x"0001584", -- shift r8 left by one
+	132 =>		x"0000064", -- decrement a
+	133 =>		x"8220000", -- goto checking shift done
+	134 =>		x"c020804", -- set dst to r8 and goto IF
+
+	-- right shift
+	135 =>		x"8920104", -- copy the shift amount into dst (from register)
+	136 =>		x"0000304", -- copy the shift amount into dst (from immediate)
+	137 =>		x"8d80000", -- is the shift amount (in a) equal to 0? if so, go to setting dst to r8. otherwise, continue.
+	138 =>		x"0001544", -- shift r8 right by one
+	139 =>		x"0000064", -- decrement a
+	140 =>		x"8920000", -- goto checking shift done
+	141 =>		x"c020804", -- set dst to r8 and goto IF
+
+	-- beq
+	142 =>		x"1280000", -- goto unconditional branch if zero
+	143 =>		x"c020000", -- otherwise continue as normal
+\end{minted}
+
+
+\newpage
+\subsection{Test program}
+Below is the sample program as initialized into the start of memory.
+\begin{minted}{vhdl}
+x"0203", -- adi r0, r0, 3
+x"0242", -- adi r1, r0, 2
+x"048c", -- sui r2, r1, 4
+x"06d0", -- inc r3, r2
+x"0918", -- dec r4, r3
+x"0b59", -- add r5, r3, r1
+x"0daa", -- sub r6, r5, r2
+x"0fdd", -- and r7, r3, r5 ; (2 & 7)
+x"11c8", -- or r7, r1, r0  ; (5 | 3)
+x"13f5", -- xor r7, r6, r5 ; (6 ^ 7)
+x"15c8", -- not r7, r1     ; (~5)
+
+x"13b6", -- xor r6, r6, r6
+x"17b0", -- ld r6, [r6]
+x"036f", -- adi r5, r5, #7
+x"036f", -- adi r5, r5, #7
+x"036f", -- adi r5, r5, #7
+x"036f", -- adi r5, r5, #7
+x"036f", -- adi r5, r5, #7
+x"182f", -- st r7, [r5] ; (r5 = 42)
+x"17a8", -- ld r6, [r5]
+x"1a2b", -- sti 3, [r5]
+x"17a8", -- ld r6, [r5]
+
+x"1db5", -- sli r6, 5
+x"1f6b", -- sl r5, r3 ; (<< 2)
+x"1db0", -- sli r6, 0
+x"1292", -- xor r2, r2, r2
+x"1f6a", -- sl r5, r2 ; (<< 0)
+
+x"21fa", -- sri r7, 2
+x"2368", -- sr r5, r0 ; (>> 3)
+
+x"2403", -- b +3
+x"13ff", -- xor r7, r7, r7
+x"2402", -- b +2
+x"03ff", -- adi r7, r7, 7
+x"25c5", -- b -3
+
+x"260a", -- beq +2, r1
+x"0449", -- sui r1, r1, 1
+x"25c5", -- b -3
+x"024f", -- adi r1, r1, 7
+x"fe00", -- nop
+x"fe00", -- nop
+
+x"0000"  -- hlt
+\end{minted}
+
 \end{document}
 # vim: nofoldenable
